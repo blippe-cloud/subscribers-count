@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登録者数リアルタイム</title>
+
+  <link rel="stylesheet" href="output.css">
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js" async
+    defer></script>
+</head>
+<body>
+  <header class="fixed top-0 navbar bg-base-300 px-40">
+    <div class="flex-1">
+      <a href="https://youtube.com/channel/UCjDcjOeP9KM8gSzQSeZC7IQ"
+        class="btn btn-ghost lowercase text-xl" target="_blank">
+        curious george 999
+      </a>
+    </div>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal p-0">
+        <div class="dropdown">
+          <label tabindex="0" class="btn m-1">モード</label>
+          <ul tabindex="0"
+            class="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-52">
+            <li><a href="#normal">通常</a></li>
+            <li><a href="#compare">比較</a></li>
+          </ul>
+        </div>
+      </ul>
+    </div>
+  </header>
+  <section class="py-10 h-screen" id="normal">
+    <div class="mx-auto container flex flex-col items-center">
+      <p class="text-4xl mt-20">登録者数リアルタイム</p>
+      <article class="card w-1/2 mt-5">
+        <div class="card-body items-center text-center gap-5">
+          <div class="form-control text-left">
+            <label for="channel-url" class="label">
+              <span class="label-text">https://youtube.com/channel/ と表記してください</span>
+            </label>
+            <label class="input-group">
+              <span>URL</span>
+              <input type="text" class="input input-primary" id="channel-url"
+                placeholder="URLを入力">
+            </label>
+            <label for="channel-url" class="label">
+              <span class="label-text-alt">
+                <a href="https://diy-programming.site/youtube-customurl-converter/"
+                  target="_blank" class="link">
+                  カスタムURLから普通のURLに戻す方法
+                </a>
+              </span>
+            </label>
+          </div>
+          <div class="card-action">
+            <button class="btn btn-accent" id="show">表示!</button>
+          </div>
+        </div>
+      </article>
+      <div id="channel-stats">
+        <div
+          class="stats stats-vertical lg:stats-horizontal w-[350px] h-[300px] lg:w-[800px] lg:h-[200px] bg-neutral text-neutral-content">
+          <div class="stat">
+            <div class="stat-title">視聴回数</div>
+            <div class="stat-value row-span-2" id="views">0</div>
+            <div class="stat-desc" id="views-de-increase">+0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-figure text-secondary text-center">
+              <div class="avatar">
+                <div class="w-16 rounded-full">
+                  <img src="./images.png" id="channel-icon" alt="avatar" width="64"
+                    height="64">
+                </div>
+              </div>
+              <div id="channel-name">名前</div>
+            </div>
+            <div class="stat-title">登録者数</div>
+            <div class="stat-value row-span-2" id="subscribers">0</div>
+            <div class="stat-desc" id="subs-de-increase">+0</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn w-1/2 btn-primary mt-5" id="stop"
+        disabled="disabled">やめる</button>
+    </div>
+  </section>
+  <!-- <section class="py-10 h-screen" id="compare">
+    <div class="mx-auto container flex flex-col items-center">
+      <div class="contents" id="form-wrapper">
+        <p class="text-4xl mt-20">登録者数比較リアルタイム</p>
+        <p class="text-xl mt-10">https://youtube.com/channel/と表記してください</p>
+        <div class="form-control mt-10 text-left" id="channel1">
+          <label class="label">
+            <span class="label-text">
+              チャンネル名1
+            </span>
+          </label>
+          <label class="input-group">
+            <span>URL</span>
+            <input type="text" class="input input-bordered input-accent"
+              placeholder="URL..." id="channel-name1">
+          </label>
+        </div>
+        <div class="form-control mt-10 text-left" id="channel2">
+          <label class="label">
+            <span class="label-text">
+              チャンネル名2
+            </span>
+          </label>
+          <label class="input-group">
+            <span>URL</span>
+            <input type="text" class="input input-bordered input-accent"
+              placeholder="URL..." id="channel-name2">
+          </label>
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <div class="mt-10 text-center btn btn-circle" id="delete">-</div>
+        <div class="mt-10 text-center btn btn-circle" id="add">+</div>
+      </div>
+      <div id="channel-stats-compare">
+        <div class="stats"></div>
+        <div class="stats"></div>
+        <div class="stats"></div>
+        <div class="stats"></div>
+        <div class="stats"></div>
+      </div>
+    </div>
+  </section> -->
+  <div class="alert alert-warning fixed bottom-3 left-3 shadow-lg hidden"
+    id="error-alert">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6"
+        fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+      <div>
+        <h3 class="font-bold">エラー! URLが間違っています!</h3>
+        <div class="text-xs">URLをもう一度確認してください。</div>
+      </div>
+    </div>
+    <div class="flex-none">
+      <button class="btn btn-sm" id="error-alert-close">OK</button>
+    </div>
+  </div>
+  <div class="hidden">
+    <div id="subscribers-hidden"></div>
+    <div id="views-hidden"></div>
+  </div>
+
+  <script>
+    // Normal mode JavaScript
+
+    {
+      $('#stop').attr('disabled', 'disabled');
+
+      $('#show').on('click', () => {
+        $('#show').attr('disabled', 'disabled');
+        $('#channel-url').attr('disabled', 'disabled');
+
+        $('#stop').removeAttr('disabled');
+
+        let id = $('#channel-url').val().replace('https://youtube.com/channel/', '');
+
+        $('#channel-name').text('ロード中...');
+        $('#subscribers').text('ロード中...');
+        $('#views').text('ロード中...');
+        $('#channel-icon').attr('src', './images.png');
+
+        const reload = setInterval(() => {
+
+          $.ajax(`https://mixerno.space/api/youtube-channel-counter/user/${id}`).done(data => {
+            data = JSON.parse(data);
+
+            let subsNUpdated = $('#subscribers-hidden').text();
+            let viewsNUpdated = $('#views-hidden').text();
+
+            const channelNameSlice = data.user[0].count.length > 20 ? (data.user[0].count).slice(0, 20) + "…" : data.user[0].count;
+
+            $('#channel-name').text(channelNameSlice);
+            $('#subscribers').text((data.counts[0].count).toLocaleString());
+            $('#views').text((data.counts[3].count).toLocaleString());
+            $('#subscribers-hidden').text(data.counts[0].count);
+            $('#views-hidden').text(data.counts[3].count);
+
+            let subsUpdated = $('#subscribers-hidden').text();
+            let viewsUpdated = $('#views-hidden').text();
+
+            let subsDeIncrease = subsUpdated - subsNUpdated;
+            let viewsDeIncrease = viewsUpdated - viewsNUpdated;
+
+            if (subsDeIncrease < 0) $('#subs-de-increase').text(subsDeIncrease.toLocaleString())
+            else $('#subs-de-increase').text(`+${subsDeIncrease.toLocaleString()}`);
+
+            if (viewsDeIncrease < 0) $('#views-de-increase').text(viewsDeIncrease.toLocaleString())
+            else $('#views-de-increase').text(`+${viewsDeIncrease.toLocaleString()}`);
+
+            $('#channel-icon').attr('src', data.user[1].count);
+
+          });
+
+          if (!(String($('#channel-url').val()).startsWith('https://youtube.com/channel/'))) {
+            $('#error-alert').show(400, () => {
+              $('#error-alert')
+
+              $('#error-alert').removeAttr('style');
+              $('#error-alert').removeClass('hidden');
+            });
+
+            $('#error-alert-close').on('click', () => {
+
+              $('#error-alert').hide(400, () => {
+                $('#error-alert').removeAttr('style');
+                $('#error-alert').addClass('hidden');
+              });
+
+              $('#show').removeAttr('disabled');
+              $('#channel-url').removeAttr('disabled');
+
+              $('#stop').attr('disabled', 'disabled');
+            });
+
+            $('#channel-name').text('名前');
+            $('#subscribers').text('0');
+            $('#views').text('0');
+            $('#channel-icon').attr('src', './images.png');
+
+            clearInterval(reload);
+          }
+        }, 2000);
+
+        $('#stop').on('click', () => {
+          clearInterval(reload);
+
+          $('#channel-name').text('名前');
+          $('#subscribers').text('0');
+          $('#views').text('0');
+
+          $('#show').removeAttr('disabled');
+          $('#channel-url').removeAttr('disabled');
+          $('#channel-icon').attr('src', './images.png');
+
+          $('#stop').attr('disabled', 'disabled');
+
+          $('#error-alert').hide(400, () => {
+            $('#error-alert').removeAttr('style');
+            $('#error-alert').addClass('hidden');
+          });
+        });
+      });
+    }
+
+    // Compare mode JavaScript
+    // let channelsArr = [
+    //   2, 1
+    // ];
+
+    // $('#add').on('click', () => {
+    //   if ($('.form-control.mt-10.text-left').length < 5) {
+    //     const newChannel = document.createElement('div');
+
+    //     channelsArr.unshift(channelsArr[0] + 1);
+
+    //     newChannel.classList.add('form-control');
+    //     newChannel.classList.add('text-left');
+    //     newChannel.classList.add('mt-10');
+    //     newChannel.id = `channel${channelsArr[0]}`
+
+    //     newChannel.innerHTML = `<label class="label">
+    //         <span class="label-text">
+    //           チャンネル名${channelsArr[0]}
+    //         </span>
+    //       </label>
+    //       <label class="input-group">
+    //         <span>URL</span>
+    //         <input type="text" class="input input-bordered input-accent"
+    //           placeholder="URL..." id="channel-name${channelsArr[0]}">
+    //       </label>`
+
+    //     document.getElementById('form-wrapper').appendChild(newChannel);
+    //   } else {
+
+    //   }
+    // });
+
+    // $('#delete').on('click', () => {
+    //   if ($('.form-control.mt-10.text-left').length > 2) {
+    //     const deleteChannel = channelsArr.shift();
+
+    //     document.getElementById(`channel${deleteChannel}`).remove();
+    //   }
+    // });
+  </script>
+</body>
+</html>
