@@ -154,106 +154,107 @@
   </div>
 
   <script>
-    // Normal mode JavaScript
+    try {
+      // Normal mode JavaScript
 
-    {
-      $('#stop').attr('disabled', 'disabled');
+      {
+        $('#stop').attr('disabled', 'disabled');
 
-      $('#show').on('click', () => {
-        $('#show').attr('disabled', 'disabled');
-        $('#channel-url').attr('disabled', 'disabled');
+        $('#show').on('click', () => {
+          $('#show').attr('disabled', 'disabled');
+          $('#channel-url').attr('disabled', 'disabled');
 
-        $('#stop').removeAttr('disabled');
+          $('#stop').removeAttr('disabled');
 
-        let id = $('#channel-url').val().replace('https://youtube.com/channel/', '');
+          let id = $('#channel-url').val().replace('https://youtube.com/channel/', '');
 
-        $('#channel-name').text('ロード中...');
-        $('#subscribers').text('ロード中...');
-        $('#views').text('ロード中...');
-        $('#channel-icon').attr('src', './images.png');
+          $('#channel-name').text('ロード中...');
+          $('#subscribers').text('ロード中...');
+          $('#views').text('ロード中...');
+          $('#channel-icon').attr('src', './images.png');
 
-        const reload = setInterval(() => {
+          const reload = setInterval(() => {
 
-          $.ajax(`https://mixerno.space/api/youtube-channel-counter/user/${id}`).done(data => {
-            data = JSON.parse(data);
+            $.ajax(`https://mixerno.space/api/youtube-channel-counter/user/${id}`).done(data => {
+              data = JSON.parse(data);
 
-            let subsNUpdated = $('#subscribers-hidden').text();
-            let viewsNUpdated = $('#views-hidden').text();
+              let subsNUpdated = $('#subscribers-hidden').text();
+              let viewsNUpdated = $('#views-hidden').text();
 
-            const channelNameSlice = data.user[0].count.length > 20 ? (data.user[0].count).slice(0, 20) + "…" : data.user[0].count;
+              const channelNameSlice = data.user[0].count.length > 20 ? (data.user[0].count).slice(0, 20) + "…" : data.user[0].count;
 
-            $('#channel-name').text(channelNameSlice);
-            $('#subscribers').text((data.counts[0].count).toLocaleString());
-            $('#views').text((data.counts[3].count).toLocaleString());
-            $('#subscribers-hidden').text(data.counts[0].count);
-            $('#views-hidden').text(data.counts[3].count);
+              $('#channel-name').text(channelNameSlice);
+              $('#subscribers').text((data.counts[0].count).toLocaleString());
+              $('#views').text((data.counts[3].count).toLocaleString());
+              $('#subscribers-hidden').text(data.counts[0].count);
+              $('#views-hidden').text(data.counts[3].count);
 
-            let subsUpdated = $('#subscribers-hidden').text();
-            let viewsUpdated = $('#views-hidden').text();
+              let subsUpdated = $('#subscribers-hidden').text();
+              let viewsUpdated = $('#views-hidden').text();
 
-            let subsDeIncrease = subsUpdated - subsNUpdated;
-            let viewsDeIncrease = viewsUpdated - viewsNUpdated;
+              let subsDeIncrease = subsUpdated - subsNUpdated;
+              let viewsDeIncrease = viewsUpdated - viewsNUpdated;
 
-            if (subsDeIncrease < 0) $('#subs-de-increase').text(subsDeIncrease.toLocaleString())
-            else $('#subs-de-increase').text(`+${subsDeIncrease.toLocaleString()}`);
+              if (subsDeIncrease < 0) $('#subs-de-increase').text(subsDeIncrease.toLocaleString())
+              else $('#subs-de-increase').text(`+${subsDeIncrease.toLocaleString()}`);
 
-            if (viewsDeIncrease < 0) $('#views-de-increase').text(viewsDeIncrease.toLocaleString())
-            else $('#views-de-increase').text(`+${viewsDeIncrease.toLocaleString()}`);
+              if (viewsDeIncrease < 0) $('#views-de-increase').text(viewsDeIncrease.toLocaleString())
+              else $('#views-de-increase').text(`+${viewsDeIncrease.toLocaleString()}`);
 
-            $('#channel-icon').attr('src', data.user[1].count);
+              $('#channel-icon').attr('src', data.user[1].count);
 
-          });
-
-          if (!(String($('#channel-url').val()).startsWith('https://youtube.com/channel/'))) {
-            $('#error-alert').show(400, () => {
-              $('#error-alert')
-
-              $('#error-alert').removeAttr('style');
-              $('#error-alert').removeClass('hidden');
             });
 
-            $('#error-alert-close').on('click', () => {
+            if (!(String($('#channel-url').val()).startsWith('https://youtube.com/channel/'))) {
+              $('#error-alert').show(400, () => {
+                $('#error-alert')
 
-              $('#error-alert').hide(400, () => {
                 $('#error-alert').removeAttr('style');
-                $('#error-alert').addClass('hidden');
+                $('#error-alert').removeClass('hidden');
               });
 
-              $('#show').removeAttr('disabled');
-              $('#channel-url').removeAttr('disabled');
+              $('#error-alert-close').on('click', () => {
 
-              $('#stop').attr('disabled', 'disabled');
-            });
+                $('#error-alert').hide(400, () => {
+                  $('#error-alert').removeAttr('style');
+                  $('#error-alert').addClass('hidden');
+                });
+
+                $('#show').removeAttr('disabled');
+                $('#channel-url').removeAttr('disabled');
+
+                $('#stop').attr('disabled', 'disabled');
+              });
+
+              $('#channel-name').text('名前');
+              $('#subscribers').text('0');
+              $('#views').text('0');
+              $('#channel-icon').attr('src', './images.png');
+
+              clearInterval(reload);
+            }
+          }, 2000);
+
+          $('#stop').on('click', () => {
+            clearInterval(reload);
 
             $('#channel-name').text('名前');
             $('#subscribers').text('0');
             $('#views').text('0');
+
+            $('#show').removeAttr('disabled');
+            $('#channel-url').removeAttr('disabled');
             $('#channel-icon').attr('src', './images.png');
 
-            clearInterval(reload);
-          }
-        }, 2000);
+            $('#stop').attr('disabled', 'disabled');
 
-        $('#stop').on('click', () => {
-          clearInterval(reload);
-
-          $('#channel-name').text('名前');
-          $('#subscribers').text('0');
-          $('#views').text('0');
-
-          $('#show').removeAttr('disabled');
-          $('#channel-url').removeAttr('disabled');
-          $('#channel-icon').attr('src', './images.png');
-
-          $('#stop').attr('disabled', 'disabled');
-
-          $('#error-alert').hide(400, () => {
-            $('#error-alert').removeAttr('style');
-            $('#error-alert').addClass('hidden');
+            $('#error-alert').hide(400, () => {
+              $('#error-alert').removeAttr('style');
+              $('#error-alert').addClass('hidden');
+            });
           });
         });
-      });
-    }
+      }
 
       // Compare mode JavaScript
       // let channelsArr = [
@@ -295,6 +296,9 @@
       //     document.getElementById(`channel${deleteChannel}`).remove();
       //   }
       // });
+    } catch (error) {
+      alert(`エラーが発生しました: ${error}`);
+    }
   </script>
 </body>
 </html>
