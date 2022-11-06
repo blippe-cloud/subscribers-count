@@ -86,49 +86,6 @@
         disabled="disabled">やめる</button>
     </div>
   </section>
-  <!-- <section class="py-10 h-screen" id="compare">
-    <div class="mx-auto container flex flex-col items-center">
-      <div class="contents" id="form-wrapper">
-        <p class="text-4xl mt-20">登録者数比較リアルタイム</p>
-        <p class="text-xl mt-10">https://youtube.com/channel/と表記してください</p>
-        <div class="form-control mt-10 text-left" id="channel1">
-          <label class="label">
-            <span class="label-text">
-              チャンネル名1
-            </span>
-          </label>
-          <label class="input-group">
-            <span>URL</span>
-            <input type="text" class="input input-bordered input-accent"
-              placeholder="URL..." id="channel-name1">
-          </label>
-        </div>
-        <div class="form-control mt-10 text-left" id="channel2">
-          <label class="label">
-            <span class="label-text">
-              チャンネル名2
-            </span>
-          </label>
-          <label class="input-group">
-            <span>URL</span>
-            <input type="text" class="input input-bordered input-accent"
-              placeholder="URL..." id="channel-name2">
-          </label>
-        </div>
-      </div>
-      <div class="flex gap-4">
-        <div class="mt-10 text-center btn btn-circle" id="delete">-</div>
-        <div class="mt-10 text-center btn btn-circle" id="add">+</div>
-      </div>
-      <div id="channel-stats-compare">
-        <div class="stats"></div>
-        <div class="stats"></div>
-        <div class="stats"></div>
-        <div class="stats"></div>
-        <div class="stats"></div>
-      </div>
-    </div>
-  </section> -->
   <div class="alert alert-warning fixed bottom-3 left-3 shadow-lg hidden"
     id="error-alert">
     <div>
@@ -156,8 +113,6 @@
     crossorigin="anonymous"></script>
   <script>
     try {
-      // Normal mode JavaScript
-
       {
         $('#stop').attr('disabled', 'disabled');
 
@@ -256,47 +211,6 @@
           });
         });
       }
-
-      // Compare mode JavaScript
-      // let channelsArr = [
-      //   2, 1
-      // ];
-
-      // $('#add').on('click', () => {
-      //   if ($('.form-control.mt-10.text-left').length < 5) {
-      //     const newChannel = document.createElement('div');
-
-      //     channelsArr.unshift(channelsArr[0] + 1);
-
-      //     newChannel.classList.add('form-control');
-      //     newChannel.classList.add('text-left');
-      //     newChannel.classList.add('mt-10');
-      //     newChannel.id = `channel${channelsArr[0]}`
-
-      //     newChannel.innerHTML = `<label class="label">
-      //         <span class="label-text">
-      //           チャンネル名${channelsArr[0]}
-      //         </span>
-      //       </label>
-      //       <label class="input-group">
-      //         <span>URL</span>
-      //         <input type="text" class="input input-bordered input-accent"
-      //           placeholder="URL..." id="channel-name${channelsArr[0]}">
-      //       </label>`
-
-      //     document.getElementById('form-wrapper').appendChild(newChannel);
-      //   } else {
-
-      //   }
-      // });
-
-      // $('#delete').on('click', () => {
-      //   if ($('.form-control.mt-10.text-left').length > 2) {
-      //     const deleteChannel = channelsArr.shift();
-
-      //     document.getElementById(`channel${deleteChannel}`).remove();
-      //   }
-      // });
     } catch (error) {
       alert(`エラーが発生しました: ${error}`);
     }
